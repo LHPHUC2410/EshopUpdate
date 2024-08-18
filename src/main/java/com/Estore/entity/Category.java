@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
 }
