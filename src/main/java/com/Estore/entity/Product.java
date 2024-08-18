@@ -1,19 +1,14 @@
 package com.Estore.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Product {
@@ -25,4 +20,11 @@ public class Product {
 	private String image;
 	private String description;
 	private int quantity;
+
+	@ManyToOne
+	@JoinColumn(name = "category_id", nullable = false)
+	private Category category;
+
+	public Product() {
+	}
 }
