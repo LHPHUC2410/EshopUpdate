@@ -8,6 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CategoryRequest {
-
     private String name;
 }

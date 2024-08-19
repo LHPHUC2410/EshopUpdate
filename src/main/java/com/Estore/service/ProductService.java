@@ -3,6 +3,8 @@ package com.Estore.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.Estore.entity.Category;
+import com.Estore.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +21,15 @@ public class ProductService {
 	
 	@Autowired
 	ProductMapper productMapper;
+
+	@Autowired
+	CategoryRepository categoryRepository;
 	
 	public Product create(ProductRequest request)
 	{
 		Product product =  productMapper.toProduct(request);
+		Category category = categoryRepository.findById(request.getCategory_id()).orElseThrow(() -> new RuntimeException("Category not found"));
+		product.setCategory(category);
 		return productRepository.save(product);
 	}
 	
