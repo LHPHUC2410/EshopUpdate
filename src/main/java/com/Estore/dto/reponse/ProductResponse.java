@@ -1,5 +1,7 @@
 package com.Estore.dto.reponse;
 
+import com.Estore.entity.Category;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,10 +14,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ProductResponse {
+	private String id;
 	private String name;
 	private double price;
 	private String image;
 	private String description;
 	private int quantity;
-	private String category_id;
+	private Category category;
 }

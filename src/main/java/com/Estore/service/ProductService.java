@@ -42,7 +42,7 @@ public class ProductService {
 	
 	public ProductResponse getProduct(String id)
 	{
-		Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+		Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));		
 		return productMapper.toProductResponse(product); 
 	}
 	
@@ -50,6 +50,8 @@ public class ProductService {
 	{
 		Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 		productMapper.updateProduct(product, request);
+		Category category = categoryRepository.findById(request.getCategory_id()).orElseThrow(() -> new RuntimeException("Category not found"));
+		product.setCategory(category);
 		return productMapper.toProductResponse(productRepository.save(product)); 
 	}
 	
