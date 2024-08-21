@@ -1,5 +1,8 @@
 package com.Estore.dto.reponse;
 
+import java.time.LocalDate;
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,12 +14,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductResponse {
+public class OrderResponse {
 	private String id;
-	private String name;
-	private double price;
-	private String image;
-	private String description;
-	private int quantity;
-	private String category_name;
+	private LocalDate orderDate;
+	
+	private Set<ProductResponse> products;
 }

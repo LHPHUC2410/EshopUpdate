@@ -1,4 +1,4 @@
-package com.Estore.dto.reponse;
+package com.Estore.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,12 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductResponse {
-	private String id;
-	private String name;
-	private double price;
-	private String image;
-	private String description;
+public class OrderDetailsRequest {
+	private String order_id;
+	
+	private String product_id;
+	
 	private int quantity;
-	private String category_name;
 }

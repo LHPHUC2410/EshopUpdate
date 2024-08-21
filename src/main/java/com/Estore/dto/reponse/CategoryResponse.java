@@ -1,5 +1,7 @@
 package com.Estore.dto.reponse;
 
+import java.util.List;
+
 import lombok.*;
 
 @Getter
@@ -10,4 +12,6 @@ import lombok.*;
 public class CategoryResponse {
     private String id;
     private String name;
+    
+    private List<ProductResponse> products;
 }

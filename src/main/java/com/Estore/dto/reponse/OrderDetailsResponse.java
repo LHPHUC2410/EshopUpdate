@@ -11,12 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductResponse {
+public class OrderDetailsResponse {
 	private String id;
-	private String name;
-	private double price;
-	private String image;
-	private String description;
+	
+	private String order_id;
+	
+	private String product_name;
+	
 	private int quantity;
-	private String category_name;
 }
