@@ -1,7 +1,9 @@
 package com.Estore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,14 @@ public class OrderDetailsController {
 	{
 		return ApiResponse.<OrderDetailsResponse>builder()
 				.result(orderDetailsService.create(request))
+				.build();
+	}
+
+	@PutMapping("/{id}")
+	public ApiResponse<OrderDetailsResponse> update (@PathVariable String id ,@RequestBody OrderDetailsRequest request)
+	{
+		return ApiResponse.<OrderDetailsResponse>builder()
+				.result(orderDetailsService.update(id, request))
 				.build();
 	}
 }

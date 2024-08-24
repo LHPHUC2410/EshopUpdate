@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.Estore.dto.reponse.OrderDetailsResponse;
 import com.Estore.dto.request.OrderDetailsRequest;
+import com.Estore.entity.OrderDetails;
 import com.Estore.mapper.OrderDetailsMapper;
 import com.Estore.repository.OrderDetailsRepositiory;
 import com.Estore.repository.OrderRepository;
@@ -51,5 +52,31 @@ public class OrderDetailsService {
 		orderDetailsResponse.setProduct_name(product.getName());
 		
 		return orderDetailsResponse;
+	}
+
+	public void delete(String id) {
+		orderDetailsRepositiory.deleteById(id);
+	}
+
+	public OrderDetailsResponse update(String id, OrderDetailsRequest request) {
+		OrderDetails details = orderDetailsRepositiory.findById(id).orElseThrow(() -> new RuntimeException("OrderDetails not found"));
+		details.setQuantity(request.getQuantity());
+		var order = orderRepository.findById(request.getOrder_id()).orElse(null);
+		var product = productRepository.findById(request.getProduct_id()).orElseThrow(() -> new RuntimeException("Product not found"));
+		
+		details.setOrder(order);
+		details.setProduct(product);
+
+		OrderDetailsResponse result = orderDetailsMapper.toOrderDetailsResponse(details);
+		if(order == null) {
+			result.setOrder_id("none");
+		} else 
+		{
+			result.setOrder_id(order.getId());
+		}
+		result.setProduct_name(product.getName());
+
+		orderDetailsRepositiory.save(details);
+		return result;
 	}
 }
