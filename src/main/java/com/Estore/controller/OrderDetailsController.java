@@ -1,6 +1,10 @@
 package com.Estore.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,6 +36,22 @@ public class OrderDetailsController {
 	{
 		return ApiResponse.<OrderDetailsResponse>builder()
 				.result(orderDetailsService.update(id, request))
+				.build();
+	}
+
+	@DeleteMapping("/{id}")
+	public ApiResponse<Void> delete(@PathVariable String id)
+	{
+		orderDetailsService.delete(id);
+		return ApiResponse.<Void>builder()
+		.build();
+	}
+
+	@GetMapping()
+	public ApiResponse<List<OrderDetailsResponse>> getAll()
+	{
+		return ApiResponse.<List<OrderDetailsResponse>>builder()
+				.result(orderDetailsService.getAll())
 				.build();
 	}
 }

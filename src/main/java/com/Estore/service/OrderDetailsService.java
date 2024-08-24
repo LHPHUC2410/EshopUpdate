@@ -1,5 +1,8 @@
 package com.Estore.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +47,7 @@ public class OrderDetailsService {
 		
 		//orderDetailsResponse.setOrder_id(order.getId());
 		if(order == null) {
-			orderDetailsResponse.setOrder_id("none1111");
+			orderDetailsResponse.setOrder_id("none");
 		} else {
 			orderDetailsResponse.setOrder_id(order.getId());
 		}
@@ -77,6 +80,25 @@ public class OrderDetailsService {
 		result.setProduct_name(product.getName());
 
 		orderDetailsRepositiory.save(details);
+		return result;
+	}
+
+	public List<OrderDetailsResponse> getAll()
+	{
+		var list = orderDetailsRepositiory.findAll();
+		List<OrderDetailsResponse> result = new ArrayList<OrderDetailsResponse>();
+		for (OrderDetails orderDetails : list) {
+			OrderDetailsResponse temp = orderDetailsMapper.toOrderDetailsResponse(orderDetails);
+			if (orderDetails.getOrder() == null) {
+				temp.setOrder_id("none");
+			} else
+			{
+				temp.setOrder_id(orderDetails.getOrder().getId());
+			}
+			//temp.setOrder_id(orderDetails.getOrder().getId());
+			temp.setProduct_name(orderDetails.getProduct().getName());
+			result.add(temp);
+		}
 		return result;
 	}
 }
