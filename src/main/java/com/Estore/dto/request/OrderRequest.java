@@ -16,5 +16,5 @@ import lombok.Setter;
 @Builder
 public class OrderRequest {
 	private LocalDate orderDate;
-	private Set<String> product_ids;
+	private Set<String> orderdetails_ids;
 }

@@ -1,6 +1,7 @@
 package com.Estore.dto.reponse;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import lombok.AllArgsConstructor;
@@ -18,5 +19,5 @@ public class OrderResponse {
 	private String id;
 	private LocalDate orderDate;
 	
-	private Set<ProductResponse> products;
+	private Set<OrderDetailsResponse> orderDetailsResponses;
 }

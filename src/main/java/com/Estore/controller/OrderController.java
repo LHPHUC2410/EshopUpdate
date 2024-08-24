@@ -17,12 +17,12 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	
-//	@PostMapping()
-//	public ApiResponse<OrderResponse> create(@RequestBody OrderRequest request)
-//	{
-//		var oder = orderService.create(request);
-//		return ApiResponse.<OrderResponse>builder()
-//				.result(oder)
-//				.build();
-//	}
+	@PostMapping()
+	public ApiResponse<OrderResponse> create(@RequestBody OrderRequest request)
+	{
+		var oder = orderService.create(request);
+		return ApiResponse.<OrderResponse>builder()
+				.result(oder)
+				.build();
+	}
 }
