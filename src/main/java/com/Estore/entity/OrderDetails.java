@@ -1,8 +1,5 @@
 package com.Estore.entity;
 
-import java.time.LocalDate;
-import java.util.Set;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +25,7 @@ public class OrderDetails {
 	
 	@ManyToOne
 	@JoinColumn(name = "order_id")
-	private Orders order;
+	private Orders order; 
 	
 	@ManyToOne 
 	@JoinColumn(name = "product_id", nullable = false)

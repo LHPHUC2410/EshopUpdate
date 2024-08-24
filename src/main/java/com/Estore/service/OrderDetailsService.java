@@ -29,9 +29,10 @@ public class OrderDetailsService {
 		
 		var orderDetailsResponse = orderDetailsMapper.toOrderDetailsResponse(oDetails);
 		
-		var order = orderRepository.findById(request.getOrder_id()).orElseThrow(() -> new RuntimeException("Order not found"));
+		var order = orderRepository.findById(request.getOrder_id()).orElse(null);
+
 		
-		var product = productRepository.findById(request.getProduct_id()).orElseThrow(() -> new RuntimeException("Order not found"));
+		var product = productRepository.findById(request.getProduct_id()).orElseThrow(() -> new RuntimeException("Product not found"));
 		
 		oDetails.setOrder(order);
 		oDetails.setProduct(product);
@@ -39,7 +40,14 @@ public class OrderDetailsService {
 		orderDetailsRepositiory.save(oDetails);
 		
 		orderDetailsResponse.setId(oDetails.getId());
-		orderDetailsResponse.setOrder_id(order.getId());
+		
+		//orderDetailsResponse.setOrder_id(order.getId());
+		if(order == null) {
+			orderDetailsResponse.setOrder_id("none1111");
+		} else {
+			orderDetailsResponse.setOrder_id(order.getId());
+		}
+
 		orderDetailsResponse.setProduct_name(product.getName());
 		
 		return orderDetailsResponse;
