@@ -1,6 +1,7 @@
 package com.Estore.service;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,10 +9,10 @@ import org.springframework.stereotype.Service;
 import com.Estore.dto.reponse.OrderDetailsResponse;
 import com.Estore.dto.reponse.OrderResponse;
 import com.Estore.dto.request.OrderRequest;
+import com.Estore.entity.OrderDetails;
 import com.Estore.entity.Orders;
 import com.Estore.mapper.OrderDetailsMapper;
 import com.Estore.mapper.OrderMapper;
-import com.Estore.mapper.ProductMapper;
 import com.Estore.repository.OrderDetailsRepositiory;
 import com.Estore.repository.OrderRepository;
 
@@ -25,6 +26,9 @@ public class OrderService {
 	
 	@Autowired
 	private OrderMapper orderMapper;
+
+	@Autowired
+	private OrderDetailsMapper detailsMapper;
 	
 	public OrderResponse create(OrderRequest request)
 	{
@@ -53,6 +57,21 @@ public class OrderService {
 			// orderResponse.setQuantity(p.getQuantity());
 			// result.getOrderDetailsResponses().add(orderResponse);
 		}
+		return result;
+	}
+
+	public OrderResponse getOrderbyId(String id) {
+		Orders order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+		OrderResponse result  = orderMapper.toOrderResponse(order);
+		Set<OrderDetailsResponse> listDetailsResponses = new HashSet<>();
+		for (OrderDetails orderDetail : order.getListorderDetails()) {
+			OrderDetailsResponse temp = new OrderDetailsResponse();
+			temp = detailsMapper.toOrderDetailsResponse(orderDetail);
+			temp.setOrder_id(orderDetail.getOrder().getId());
+			temp.setProduct_name(orderDetail.getProduct().getName());
+			listDetailsResponses.add(temp);
+		}
+		result.setOrderDetailsResponses(listDetailsResponses);
 		return result;
 	}
 }

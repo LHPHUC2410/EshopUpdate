@@ -12,7 +12,7 @@
 	<artifactId>EstoreUpdate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>EstoreUpdate</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Estore</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -32,8 +32,16 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>3.0-alpha-1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
