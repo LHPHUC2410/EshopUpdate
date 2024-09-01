@@ -1,7 +1,6 @@
 package com.Estore.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import com.Estore.dto.reponse.ProductResponse;
