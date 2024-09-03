@@ -3,6 +3,8 @@ package com.Estore.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.Estore.dto.reponse.UserResponse;
@@ -23,6 +25,8 @@ public class UserService {
     public UserResponse create(UserRequest request)
     {
         User user = userMapper.toUser(request);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
@@ -46,6 +50,8 @@ public class UserService {
         .orElseThrow(() -> new RuntimeException("User not found"));
 
         userMapper.updateUser(user, request);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
 
         return userMapper.toUserResponse(user);
