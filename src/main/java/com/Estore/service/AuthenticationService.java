@@ -1,21 +1,25 @@
 package com.Estore.service;
 
 import com.Estore.dto.reponse.AuthenticationResponse;
+import com.Estore.dto.reponse.IntrospectResponse;
 import com.Estore.dto.request.AuthenticationRequest;
+import com.Estore.dto.request.IntrospectRequest;
 import com.Estore.entity.User;
+import com.Estore.exception.AppException;
+import com.Estore.exception.ErrorCode;
 import com.Estore.repository.UserRepository;
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -40,6 +44,22 @@ public class AuthenticationService {
                 .build();
 
     }
+
+    public IntrospectResponse introspect(IntrospectRequest request) throws ParseException, JOSEException {
+        String token = request.getToken();
+        try {
+            verifyToken(token);
+        }catch (RuntimeException e)
+        {
+            return IntrospectResponse.builder()
+                    .valid(false)
+                    .build();
+        }
+        return IntrospectResponse.builder()
+                .valid(true)
+                .build();
+    }
+
     public String generateToken(User user)
     {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
@@ -57,12 +77,28 @@ public class AuthenticationService {
         JWSObject jwsObject = new JWSObject(jwsHeader, payload);
 
         try {
-            jwsObject.sign(new MACSigner(SIGNER_KEY));
+            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
             return jwsObject.serialize();
         }catch (Exception e)
         {
             System.out.println("Cannot generate token" + e.getMessage());
             throw new RuntimeException(e);
+        }
+    }
+
+    public void verifyToken(String token) throws JOSEException, ParseException {
+        JWSVerifier jwsVerifier = new MACVerifier(SIGNER_KEY.getBytes());
+
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        // kiem tra token dung hay khong?
+        var verified = signedJWT.verify(jwsVerifier);
+
+        // kiem tra token het han chua
+        Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        if (!(verified && expiryTime.after(new Date())))
+        {
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
     }
 

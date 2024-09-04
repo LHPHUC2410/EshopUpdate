@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.Estore.dto.reponse.UserResponse;
 import com.Estore.dto.request.UserRequest;
 import com.Estore.entity.User;
+import com.Estore.exception.AppException;
+import com.Estore.exception.ErrorCode;
 import com.Estore.mapper.UserMapper;
 import com.Estore.repository.UserRepository;
 
@@ -24,6 +26,11 @@ public class UserService {
 
     public UserResponse create(UserRequest request)
     {
+        if(userRepository.existsByUsername(request.getUsername()))
+        {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+
         User user = userMapper.toUser(request);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
